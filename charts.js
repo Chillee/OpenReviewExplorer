@@ -1,5 +1,5 @@
 var request = new XMLHttpRequest();
-request.open('GET', '../public/data.json', false);
+request.open('GET', 'data.json', false);
 request.send(null);
 var data = JSON.parse(request.responseText);
 
