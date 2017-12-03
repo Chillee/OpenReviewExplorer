@@ -9,7 +9,7 @@ request.send(null);
 var data = JSON.parse(request.responseText);
 
 for (let i=0; i<data.length; i++) {
-    data[i]['title'] = `<a href=${data[i]['url']}>${data[i]['title']}</a>`;
+    data[i]['title'] = `<a href=${data[i]['url']} target="_blank">${data[i]['title']}</a>`;
     data[i]['oldtitle'] = data[i]['title'];
     data[i]['extra'] = `<i class="fa fa-chevron-down"></i>`;
 }
