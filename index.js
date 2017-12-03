@@ -4,7 +4,7 @@ var options = {
   item: `<tr><td class="rank"></td><td class="rating" ></td><td class="title"></td><td class="ratings"></td><td class="confidences"></td><td class="extra break" onclick="toggleAbstract(this)"></td></tr>`
 };
 var request = new XMLHttpRequest();
-request.open('GET', '../public/data.json', false);
+request.open('GET', 'data.json', false);
 request.send(null);
 var data = JSON.parse(request.responseText);
 
@@ -63,7 +63,7 @@ function toggleAbstract(x) {
     let rank = x.parentNode.getElementsByClassName('rank')[0].innerText;
     let paper = list.get("rank", rank)[0];
     let curValues = paper._values;
-    if (curValues.extra.indexOf('fa-chevron-down') === -1) {
+    if (curValues.extra.indexOf('fa-chevron-downt') === -1) {
         curValues.extra = `<i class="fa fa-chevron-down" aria-hidden="true"></i>`;
         x.parentNode.nextSibling.remove();
     } else {
