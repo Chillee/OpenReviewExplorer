@@ -14,7 +14,7 @@ for (let i=0; i<data.length; i++) {
     data[i]['extra'] = `<i class="fa fa-chevron-down"></i>`;
 }
 let list = new List('users', options, data);
-list.sort('rating', { order: 'desc' });
+list.sort('rank', { order: 'asc' });
 function updateHighlights() {
     let searchString = document.getElementById('search').value.toLowerCase();
     if (searchString.length < 3) {
