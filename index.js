@@ -63,7 +63,7 @@ function toggleAbstract(x) {
     let rank = x.parentNode.getElementsByClassName('rank')[0].innerText;
     let paper = list.get("rank", rank)[0];
     let curValues = paper._values;
-    if (curValues.extra.indexOf('fa-chevron-downt') === -1) {
+    if (curValues.extra.indexOf('fa-chevron-down') === -1) {
         curValues.extra = `<i class="fa fa-chevron-down" aria-hidden="true"></i>`;
         x.parentNode.nextSibling.remove();
     } else {
