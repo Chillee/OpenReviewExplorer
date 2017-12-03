@@ -11,7 +11,7 @@ var data = JSON.parse(request.responseText);
 for (let i=0; i<data.length; i++) {
     data[i]['title'] = `<a href=${data[i]['url']}>${data[i]['title']}</a>`;
     data[i]['oldtitle'] = data[i]['title'];
-    data[i]['extra'] = `<i class="fa fa-chevron-up"></i>`;
+    data[i]['extra'] = `<i class="fa fa-chevron-down"></i>`;
 }
 let list = new List('users', options, data);
 list.sort('rating', { order: 'desc' });
@@ -63,11 +63,11 @@ function toggleAbstract(x) {
     let rank = x.parentNode.getElementsByClassName('rank')[0].innerText;
     let paper = list.get("rank", rank)[0];
     let curValues = paper._values;
-    if (curValues.extra.indexOf('fa-chevron-up') === -1) {
-        curValues.extra = `<i class="fa fa-chevron-up" aria-hidden="true"></i>`;
+    if (curValues.extra.indexOf('fa-chevron-down') === -1) {
+        curValues.extra = `<i class="fa fa-chevron-down" aria-hidden="true"></i>`;
         x.parentNode.nextSibling.remove();
     } else {
-        curValues.extra = `<i class="fa fa-chevron-down" aria-hidden="true"></i>`;
+        curValues.extra = `<i class="fa fa-chevron-up" aria-hidden="true"></i>`;
         let abstractNode = document.createElement('tr');
         abstractNode.innerHTML = `<td colspan="100">${curValues.abstract.replace(/\n/gm, "")}</td>`
         x.parentNode.parentNode.insertBefore(abstractNode, x.parentNode.nextSibling);
