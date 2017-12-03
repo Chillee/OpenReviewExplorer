@@ -22,7 +22,10 @@ function updateHighlights() {
     }
     let items = list.matchingItems;
     console.log(searchString);
-    let strings = [searchString, searchString[0].toUpperCase() + searchString.slice(1), searchString.toUpperCase()];
+    function toTitleCase(str) {
+        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    }
+    let strings = [searchString, toTitleCase(searchString), searchString.toUpperCase()];
     let highlightInString = (str) => {
         for (let s of strings) {
             str = str.replace(s, `<span class="highlight">${s}</span>`);
