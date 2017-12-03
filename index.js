@@ -15,13 +15,17 @@ for (let i=0; i<data.length; i++) {
 }
 let list = new List('users', options, data);
 list.sort('rank', { order: 'asc' });
+function updateSearchResults() {
+    document.getElementById('search_results').textContent = ` ${list.matchingItems.length} results`;
+}
+updateSearchResults();
+
 function updateHighlights() {
     let searchString = document.getElementById('search').value.toLowerCase();
     if (searchString.length < 3) {
         searchString='akfdjhlhsajlshkfdajkhlsajfsahlkfdjldsajhkfkajhlfdshjl';
     }
     let items = list.matchingItems;
-    console.log(searchString);
     function toTitleCase(str) {
         return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
     }
@@ -45,22 +49,10 @@ function updateHighlights() {
     }
 }
 list.on('searchComplete', (e) => {
+    document.getElementById('search_results').textContent = ` ${list.matchingItems.length}`;
+    updateSearchResults();
     updateHighlights();
 })
-
-// function closeAbstract(rank) {
-//     let paper = list.get("rank", rank)[0];
-//     let curValues = paper._values;
-//     curValues.extra = `<span onclick="expandAbstract(${curValues['rank']})"><i class="fa fa-expand" aria-hidden="true"></i></span>`;
-//     curValues.abstract;
-//     paper.values(curValues);
-// }
-// function expandAbstract(rank) {
-//     let paper = list.get("rank", rank)[0];
-//     let curValues = paper._values;
-//     curValues.extra = `<span onclick="closeAbstract(${curValues['rank']})">${curValues.abstract}"</span>`;
-//     paper.values(curValues);
-// }
 
 function toggleAbstract(x) {
     let rank = x.parentNode.getElementsByClassName('rank')[0].innerText;
@@ -74,7 +66,7 @@ function toggleAbstract(x) {
         let abstractNode = document.createElement('tr');
         abstractNode.innerHTML = `<td colspan="100">${curValues.abstract.replace(/\n/gm, "")}</td>`
         x.parentNode.parentNode.insertBefore(abstractNode, x.parentNode.nextSibling);
+        updateHighlights();
     }
-    // paper.values(curValues);
-    updateHighlights();
+    paper.values(curValues);
 }
