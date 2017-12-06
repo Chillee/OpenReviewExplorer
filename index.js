@@ -1,72 +1,162 @@
-
-var options = {
-  valueNames: ['rank', 'rating', 'title', 'ratings', 'confidences', 'extra'],
-  item: `<tr><td class="rank"></td><td class="rating" ></td><td class="title"></td><td class="ratings"></td><td class="confidences"></td><td class="extra break" onclick="toggleAbstract(this)"></td></tr>`
+RegExp.escape = function(s) {
+  return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 };
-var request = new XMLHttpRequest();
-request.open('GET', 'data.json', false);
-request.send(null);
-var data = JSON.parse(request.responseText);
 
-for (let i=0; i<data.length; i++) {
-    data[i]['title'] = `<a href=${data[i]['url']} target="_blank">${data[i]['title']}</a>`;
-    data[i]['oldtitle'] = data[i]['title'];
-    data[i]['extra'] = `<i class="fa fa-chevron-down"></i>`;
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
+
+
+let request = new XMLHttpRequest();
+
+let conference = getParameterByName('conf');
+if (!conference) {
+    conference = 'iclr2018';
+}
+document.querySelector('h1').textContent = `${conference.toUpperCase()} Open Review Explorer`
+request.open('GET', `${conference}.json`, false);
+request.send(null);
+
+let data = JSON.parse(request.responseText);
+let upChevronHTML = `<i class="fa fa-chevron-up" aria-hidden="true"></i>`;
+let downChevronHTML = `<i class="fa fa-chevron-down" aria-hidden="true"></i>`;
+
+for (let i = 0; i < data.length; i++) {
+  data[i]['title'] = `<a href=${data[i]['url']} target="_blank">${data[i]['title']}</a>`;
+  data[i]['oldtitle'] = data[i]['title'];
+  data[i]['olddecision'] = data[i]['decision'];
+  data[i]['extra'] = downChevronHTML;
+}
+
+let config = {
+  rank: `<td class="rank"></td>`,
+  rating: `<td class="rating"></td>`,
+  title: `<td class="title"></td>`,
+  ratings: `<td class="ratings"></td>`,
+  confidences: `<td class="confidences"></td>`,
+  decision: `<td class="decision"></td>`,
+  citations: `<td class="citations"></td>`,
+  extra: `<td class="extra" onclick="toggleAbstract(this)"></td>`,
+};
+let options = {};
+options.valueNames = [];
+options.item = ['<tr>'];
+
+
+let tableHead = document.querySelector('#table > thead > tr');
+for (const i in config) {
+  if (data[0][i]) {
+    options.valueNames.push(i);
+    options.item.push(config[i]);
+  } else {
+      let header = document.querySelector(`#table > thead > tr > th[data-sort="${i}"]`);
+      header.remove();
+  }
+}
+
+options.item.push('</tr>');
+options.item = options.item.join('');
 let list = new List('users', options, data);
 list.sort('rank', { order: 'asc' });
-function updateSearchResults() {
-    document.getElementById('search_results').textContent = ` ${list.matchingItems.length} results`;
+
+function updateSearchResultCount() {
+  document.getElementById('search_results').textContent = ` ${list.matchingItems.length} results`;
 }
-updateSearchResults();
+updateSearchResultCount();
+updateDisplay();
 
 function updateHighlights() {
-    let searchString = document.getElementById('search').value.toLowerCase();
-    if (searchString.length < 3) {
-        searchString='akfdjhlhsajlshkfdajkhlsajfsahlkfdjldsajhkfkajhlfdshjl';
+  let searchString = document.getElementById('search').value.toLowerCase();
+  if (searchString.length < 3) {
+    searchString = 'akfdjhlhsajlshkfdajkhlsajfsahlkfdjldsajhkfkajhlfdshjl';
+  }
+  let items = list.matchingItems;
+  let highlightInString = x => {
+    if (!x) {
+      return x;
     }
-    let items = list.matchingItems;
-    function toTitleCase(str) {
-        return str.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+    return x.replace(new RegExp(RegExp.escape(searchString), 'ig'), match => {
+      return `<span class="highlight">${match}</span>`;
+    });
+  };
+  for (const item of items) {
+    let newValues = item._values;
+    newValues.title = highlightInString(newValues.oldtitle);
+    newValues.decision = highlightInString(newValues.olddecision);
+    item.values(newValues);
+  }
+  let table = document.querySelectorAll('#table > tbody > tr');
+  for (let tr of table) {
+    if (tr.children.length === 1) {
+      tr.children[0].innerHTML = highlightInString(tr.children[0].innerHTML);
     }
-    let strings = [searchString, toTitleCase(searchString), searchString.toUpperCase()];
-    let highlightInString = (str) => {
-        for (let s of strings) {
-            str = str.replace(s, `<span class="highlight">${s}</span>`);
-        }
-        return str;
-    }
-    for (const item of items) {
-        let newValues = item._values;
-        newValues.title = highlightInString(newValues.oldtitle);
-        item.values(newValues);
-    }
-    let table = document.querySelectorAll('#table > tbody > tr');
-    for (let tr of table) {
-        if (tr.children.length === 1) {
-            tr.children[0].innerHTML = highlightInString(tr.children[0].innerHTML);
-        }
-    }
+  }
 }
-list.on('searchComplete', (e) => {
-    document.getElementById('search_results').textContent = ` ${list.matchingItems.length}`;
-    updateSearchResults();
-    updateHighlights();
-})
+
+function resetChevrons() {
+  let items = list.matchingItems;
+  for (const item of items) {
+    let newValues = item._values;
+    newValues.extra = downChevronHTML;
+    item.values(newValues);
+  }
+}
+
+function updateDisplay() {
+  let decisionCells = document.querySelectorAll('#table > tbody > tr > td.decision');
+  let decisionColors = {
+    oral: '#CCFFFF',
+    reject: '#FFCCCC',
+    poster: '#CCFFCC',
+    workshop: '#FFFFCC',
+  };
+  for (const cell of decisionCells) {
+    if (cell.textContent.indexOf('Oral') !== -1) {
+      cell.style.background = decisionColors['oral'];
+    } else if (cell.textContent.indexOf('Reject') !== -1) {
+      cell.style.background = decisionColors['reject'];
+    } else if (cell.textContent.indexOf('Poster') !== -1) {
+      cell.style.background = decisionColors['poster'];
+    } else if (cell.textContent.indexOf('Workshop') !== -1) {
+      cell.style.background = decisionColors['workshop'];
+    } else {
+      cell.style.background = '';
+    }
+  }
+}
+
+list.on('searchStart', e => {
+  document.getElementById('search_results').textContent = ` ${list.matchingItems.length}`;
+  updateSearchResultCount();
+  updateHighlights();
+  resetChevrons();
+});
+
+list.on('sortStart', e => {
+  updateDisplay();
+  updateHighlights();
+  resetChevrons();
+});
 
 function toggleAbstract(x) {
-    let rank = x.parentNode.getElementsByClassName('rank')[0].innerText;
-    let paper = list.get("rank", rank)[0];
-    let curValues = paper._values;
-    if (curValues.extra.indexOf('fa-chevron-down') === -1) {
-        curValues.extra = `<i class="fa fa-chevron-down" aria-hidden="true"></i>`;
-        x.parentNode.nextSibling.remove();
-    } else {
-        curValues.extra = `<i class="fa fa-chevron-up" aria-hidden="true"></i>`;
-        let abstractNode = document.createElement('tr');
-        abstractNode.innerHTML = `<td colspan="100">${curValues.abstract.replace(/\n/gm, "")}</td>`
-        x.parentNode.parentNode.insertBefore(abstractNode, x.parentNode.nextSibling);
-        updateHighlights();
-    }
-    paper.values(curValues);
+  let rank = x.parentNode.getElementsByClassName('rank')[0].innerText;
+  let paper = list.get('rank', rank)[0];
+  let curValues = paper._values;
+  if (curValues.extra.indexOf('fa-chevron-down') === -1) {
+    curValues.extra = downChevronHTML;
+    x.parentNode.nextSibling.remove();
+  } else {
+    curValues.extra = upChevronHTML;
+    let abstractNode = document.createElement('tr');
+    abstractNode.innerHTML = `<td colspan="100">${curValues.abstract.replace(/\n/gm, ' ')}</td>`;
+    x.parentNode.parentNode.insertBefore(abstractNode, x.parentNode.nextSibling);
+    updateHighlights();
+  }
+  paper.values(curValues);
 }

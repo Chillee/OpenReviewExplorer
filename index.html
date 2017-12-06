@@ -1,15 +1,17 @@
 <html>
 <link rel="stylesheet" type="text/css" href="index.css">
 <link rel="stylesheet" type="text/css" href="font-awesome.css">
-<title>ICLR 2018 Open Review Papers</title>
+<title>Open Review Explorer</title>
+<h1>ICLR2018 Open Review Explorer</h1>
 <div class="topnav" id="myTopnav">
-    <a class="active" href="#">Table</a>
-    <a href="charts.html">Charts</a>
-    <a href="about.html">About</a>
+    <a class='active' href='#' onclick="window.location='index.html'+window.location.search">Home</a>
+    <a href='#' onclick="window.location='charts.html'+window.location.search">Charts</a>
+    <a href='#' onclick="window.location='about.html'+window.location.search">About</a>
+    <a style='float:right' href='?conf=iclr2017'>ICLR 2017</a>
+    <a style='float:right' href='?conf=iclr2018'>ICLR 2018</a>
 </div>
 
 <div id="demo">
-    <h1>ICLR 2018 Open Review Papers</h1>
     <div id="users" class='table-responsive-vertical shadow-z-1'>
 
         <input id='search' class="search form-style-6" placeholder="Filter through papers" />
@@ -17,11 +19,13 @@
         <table id='table' class='table table-hover table-mc-light-blue'>
             <thead>
                 <tr>
-                    <th class="sort" data-sort="rank">Ranking</th>
-                    <th> Rating </th>
+                    <th class="sort" data-sort="rank">Rank</th>
+                    <th class="sort" data-sort="rating"> Rating </th>
                     <th class="sort" data-sort="title">Title</th>
                     <th>Ratings</th>
                     <th>Confidences</th>
+                    <th class="sort" data-sort="decision">Decision</th>
+                    <th class="sort" data-sort="citations">Citations</th>
                 </tr>
             </thead>
             <!-- IMPORTANT, class="list" have to be at tbody -->

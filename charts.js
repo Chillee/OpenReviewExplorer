@@ -1,5 +1,22 @@
-var request = new XMLHttpRequest();
-request.open('GET', 'data.json', false);
+function getParameterByName(name, url) {
+    if (!url) url = window.location.href;
+    name = name.replace(/[\[\]]/g, "\\$&");
+    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+        results = regex.exec(url);
+    if (!results) return null;
+    if (!results[2]) return '';
+    return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
+
+let request = new XMLHttpRequest();
+
+let conference = getParameterByName('conf');
+if (!conference) {
+    conference = 'iclr2018';
+}
+document.querySelector('h1').textContent = `${conference.toUpperCase()} Open Review Explorer`
+request.open('GET', `${conference}.json`, false);
 request.send(null);
 var data = JSON.parse(request.responseText);
 
