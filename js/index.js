@@ -20,7 +20,7 @@ if (!conference) {
     conference = 'iclr2018';
 }
 document.querySelector('h1').textContent = `${conference.toUpperCase()} Open Review Explorer`
-request.open('GET', `data/${conference}.json`, false);
+request.open('GET', `../data/${conference}.json`, false);
 request.send(null);
 
 console.log(request);
