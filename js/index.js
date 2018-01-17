@@ -20,9 +20,10 @@ if (!conference) {
     conference = 'iclr2018';
 }
 document.querySelector('h1').textContent = `${conference.toUpperCase()} Open Review Explorer`
-request.open('GET', `${conference}.json`, false);
+request.open('GET', `data/${conference}.json`, false);
 request.send(null);
 
+console.log(request);
 let data = JSON.parse(request.responseText);
 let upChevronHTML = `<i class="fa fa-chevron-up" aria-hidden="true"></i>`;
 let downChevronHTML = `<i class="fa fa-chevron-down" aria-hidden="true"></i>`;
@@ -42,6 +43,7 @@ let config = {
   confidences: `<td class="confidences"></td>`,
   decision: `<td class="decision"></td>`,
   citations: `<td class="citations"></td>`,
+  karpathy: `<td class="karpathy"></td>`,
   extra: `<td class="extra" onclick="toggleAbstract(this)"></td>`,
 };
 let options = {};
