@@ -16,7 +16,7 @@ if (!conference) {
     conference = 'iclr2018';
 }
 document.querySelector('h1').textContent = `${conference.toUpperCase()} Open Review Explorer`
-request.open('GET', `${conference}.json`, false);
+request.open('GET', `data/${conference}.json`, false);
 request.send(null);
 var data = JSON.parse(request.responseText);
 
