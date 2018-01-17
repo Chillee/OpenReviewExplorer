@@ -21,7 +21,7 @@ if (!conference) {
 }
 document.querySelector('h1').textContent = `${conference.toUpperCase()} Open Review Explorer`
 console.log(`${conference}.json`)
-request.open('GET', `../data/${conference}.json`, false);
+request.open('GET', `data/${conference}.json`, false);
 request.send(null);
 
 console.log(request);
