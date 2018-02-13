@@ -39,6 +39,7 @@ for (let i = 0; i < data.length; i++) {
 let config = {
   rank: `<td class="rank"></td>`,
   rating: `<td class="rating"></td>`,
+  variance: `<td class="variance"></td>`,
   title: `<td class="title"></td>`,
   ratings: `<td class="ratings"></td>`,
   confidences: `<td class="confidences"></td>`,
@@ -54,7 +55,9 @@ options.item = ['<tr>'];
 
 let tableHead = document.querySelector('#table > thead > tr');
 for (const i in config) {
-  if (data[0][i]) {
+  console.log(i);
+  console.log(data[0]);
+  if (data[0][i] !== undefined) {
     options.valueNames.push(i);
     options.item.push(config[i]);
   } else {
