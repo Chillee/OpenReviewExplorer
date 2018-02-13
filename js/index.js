@@ -1,15 +1,15 @@
-RegExp.escape = function(s) {
+RegExp.escape = function (s) {
   return s.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&');
 };
 
 function getParameterByName(name, url) {
-    if (!url) url = window.location.href;
-    name = name.replace(/[\[\]]/g, "\\$&");
-    var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-        results = regex.exec(url);
-    if (!results) return null;
-    if (!results[2]) return '';
-    return decodeURIComponent(results[2].replace(/\+/g, " "));
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return '';
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
 }
 
 
@@ -17,7 +17,7 @@ let request = new XMLHttpRequest();
 
 let conference = getParameterByName('conf');
 if (!conference) {
-    conference = 'iclr2018';
+  conference = 'iclr2018';
 }
 document.querySelector('h1').textContent = `${conference.toUpperCase()} Open Review Explorer`
 console.log(`${conference}.json`)
@@ -58,8 +58,8 @@ for (const i in config) {
     options.valueNames.push(i);
     options.item.push(config[i]);
   } else {
-      let header = document.querySelector(`#table > thead > tr > th[data-sort="${i}"]`);
-      header.remove();
+    let header = document.querySelector(`#table > thead > tr > th[data-sort="${i}"]`);
+    header.remove();
   }
 }
 
