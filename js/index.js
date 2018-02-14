@@ -72,7 +72,29 @@ let list = new List('users', options, data);
 list.sort('rank', { order: 'asc' });
 
 function updateSearchResultCount() {
-  document.getElementById('search_results').textContent = ` ${list.matchingItems.length} results`;
+  let sum = 0;
+  let results = [0, 0, 0, 0];
+  for (let i = 0; i < list.matchingItems.length; i++) {
+    let item = list.matchingItems[i]._values;
+    if (item.rating === ' N/A') {
+      continue;
+    }
+    sum += parseFloat(item.rating);
+    if (!item.decision) {
+      continue;
+    }
+    if (item.decision.indexOf('Oral') !== -1) {
+      results[0]++;
+    } else if (item.decision.indexOf('Poster') !== -1) {
+      results[1]++;
+    } else if (item.decision.indexOf('Workshop') !== -1) {
+      results[2]++;
+    } else if (item.decision.indexOf('Reject') !== -1) {
+      results[3]++;
+    }
+    document.getElementById('search_results').textContent =
+      ` ${list.matchingItems.length} results, ${(sum / list.matchingItems.length).toFixed(2)} mean, ${results[0]} orals, ${results[1]} posters, ${results[2]} workshops, ${results[3]} rejections`;
+  }
 }
 updateSearchResultCount();
 updateDisplay();
@@ -160,7 +182,8 @@ function toggleAbstract(x) {
   } else {
     curValues.extra = upChevronHTML;
     let abstractNode = document.createElement('tr');
-    abstractNode.innerHTML = `<td colspan="100">${curValues.abstract.replace(/\n/gm, ' ')}</td>`;
+    abstractNode.innerHTML =
+      `<td colspan="100">Authors: ${curValues.authors.join(', ')} <br> Emails: ${curValues.emails.join(', ')} <br> ${curValues.abstract.replace(/\n/gm, ' ')} </td>`;
     x.parentNode.parentNode.insertBefore(abstractNode, x.parentNode.nextSibling);
     updateHighlights();
   }
