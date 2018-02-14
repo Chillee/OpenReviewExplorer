@@ -55,8 +55,6 @@ options.item = ['<tr>'];
 
 let tableHead = document.querySelector('#table > thead > tr');
 for (const i in config) {
-  console.log(i);
-  console.log(data[0]);
   if (data[0][i] !== undefined) {
     options.valueNames.push(i);
     options.item.push(config[i]);
@@ -159,12 +157,16 @@ function updateDisplay() {
   }
 }
 
-list.on('searchStart', e => {
+list.on('searchComplete', e => {
   document.getElementById('search_results').textContent = ` ${list.matchingItems.length}`;
+  let searchString = document.getElementById('search').value.toLowerCase();
   updateSearchResultCount();
   updateHighlights();
   resetChevrons();
 });
+// list.on('update', e => {
+//   console.log(e);
+// })
 
 list.on('sortStart', e => {
   updateDisplay();
