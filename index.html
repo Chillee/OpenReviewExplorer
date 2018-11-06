@@ -1,6 +1,6 @@
 <html>
 <link rel="stylesheet" type="text/css" href="index.css">
-<link rel="stylesheet" type="text/css" href="font-awesome.css">
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css">
 <title>Open Review Explorer</title>
 <h1>ICLR2018 Open Review Explorer</h1>
 <div class="topnav" id="myTopnav">
@@ -9,10 +9,12 @@
     <a href='#' onclick="window.location='about.html'+window.location.search">About</a>
     <a style='float:right' href='?conf=iclr2017'>ICLR 2017</a>
     <a style='float:right' href='?conf=iclr2018'>ICLR 2018</a>
+    <a style='float:right' href='?conf=iclr2019'>ICLR 2019</a>
 </div>
 
 <div id="demo">
     Example Search Queries:
+
     <br> cornell.edu (all papers with a Cornell author)
     <br> Yoshua Bengio (all papers with Yoshua Bengio as a coauthor)
     <br> wasserstein (all papers mentioning wasserstein)
@@ -25,9 +27,9 @@
                     <th class="sort" data-sort="rank">Rank</th>
                     <th class="sort" data-sort="rating"> Rating </th>
                     <th class="sort" data-sort="title">Title</th>
-                    <th>Ratings</th>
+                    <th class="sort" data-sort="rank">Ratings</th>
                     <th class="sort" data-sort="variance"> Variance </th>
-                    <th>Confidences</th>
+                    <th class="sort" data-sort="rank">Confidences</th>
                     <th class="sort" data-sort="decision">Decision</th>
                     <th class="sort" data-sort="citations">Citations</th>
                     <th class="sort" data-sort="karpathy">karpathy</th>

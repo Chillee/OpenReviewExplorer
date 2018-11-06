@@ -17,7 +17,7 @@ let request = new XMLHttpRequest();
 
 let conference = getParameterByName('conf');
 if (!conference) {
-  conference = 'iclr2018';
+  conference = 'iclr2019';
 }
 document.querySelector('h1').textContent = `${conference.toUpperCase()} Open Review Explorer`
 console.log(`${conference}.json`)
@@ -48,9 +48,11 @@ let config = {
   karpathy: `<td class="karpathy"></td>`,
   extra: `<td class="extra" onclick="toggleAbstract(this)"></td>`,
 };
-let options = {};
-options.valueNames = [];
-options.item = ['<tr>'];
+let options = {
+  valueNames: [],
+  item: ['<tr>'],
+  page: 200
+};
 
 
 let tableHead = document.querySelector('#table > thead > tr');
