@@ -51,7 +51,7 @@ let config = {
 let options = {
   valueNames: [],
   item: ['<tr>'],
-  page: 200
+  page: parseInt(getParameterByName('limit')) || 200
 };
 
 
@@ -70,6 +70,9 @@ options.item.push('</tr>');
 options.item = options.item.join('');
 let list = new List('users', options, data);
 list.sort('rank', { order: 'asc' });
+if (options.page >= data.length) {
+  document.getElementById('showAll').remove();
+}
 
 function updateSearchResultCount() {
   let sum = 0;
@@ -166,9 +169,6 @@ list.on('searchComplete', e => {
   updateHighlights();
   resetChevrons();
 });
-// list.on('update', e => {
-//   console.log(e);
-// })
 
 list.on('sortStart', e => {
   updateDisplay();
@@ -192,4 +192,10 @@ function toggleAbstract(x) {
     updateHighlights();
   }
   paper.values(curValues);
+}
+
+function showAll() {
+  let url = new URL(location.href);
+  url.searchParams.set('limit', 1000000000);
+  document.location = url;
 }
