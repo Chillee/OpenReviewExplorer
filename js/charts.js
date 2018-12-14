@@ -13,7 +13,7 @@ let request = new XMLHttpRequest();
 
 let conference = getParameterByName('conf');
 if (!conference) {
-    conference = 'iclr2018';
+    conference = 'iclr2019';
 }
 document.querySelector('h1').textContent = `${conference.toUpperCase()} Open Review Explorer`
 request.open('GET', `data/${conference}.json`, false);
