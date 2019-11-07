@@ -17,7 +17,7 @@ let request = new XMLHttpRequest();
 
 let conference = getParameterByName('conf');
 if (!conference) {
-  conference = 'iclr2019';
+  conference = 'iclr2020';
 }
 document.querySelector('h1').textContent = `${conference.toUpperCase()} Open Review Explorer`
 console.log(`${conference}.json`)
