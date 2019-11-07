@@ -23,7 +23,7 @@ for paper in data:
             'emails': [],
             'title': paper['name'],
             'rating': rating,
-            'confidences': [1,1,1],
+            'confidences': [],
             'rank': idx,
         }
     )
