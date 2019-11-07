@@ -95,9 +95,9 @@ function updateSearchResultCount() {
     } else if (item.decision.indexOf('Reject') !== -1) {
       results[3]++;
     }
-    document.getElementById('search_results').textContent =
-      ` ${list.matchingItems.length} results, ${(sum / list.matchingItems.length).toFixed(2)} mean, ${results[0]} orals, ${results[1]} posters, ${results[2]} workshops, ${results[3]} rejections`;
   }
+  document.getElementById('search_results').textContent =
+    ` ${list.matchingItems.length} results, ${(sum / list.matchingItems.length).toFixed(2)} mean, ${results[0]} orals, ${results[1]} posters, ${results[2]} workshops, ${results[3]} rejections`;
 }
 updateSearchResultCount();
 updateDisplay();
