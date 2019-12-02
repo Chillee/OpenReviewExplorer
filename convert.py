@@ -1,4 +1,5 @@
 import json
+from urllib.parse import quote, unquote
 
 data = json.load(open('data/iclr2020_new.json'))
 print(len(data))
@@ -22,7 +23,7 @@ for paper in data:
     ratings, rating, variance = get_ratings(paper)
     new_data.append(
         {
-            'url': paper['pdf_link'].replace('pdf', 'forum'),
+            'url': unquote(paper['pdf_link'].replace('pdf', 'forum')),
             'ratings': ratings,
             'abstract': paper['metadata']['abstract'],
             'authors': [],
