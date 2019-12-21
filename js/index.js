@@ -148,7 +148,7 @@ function updateDisplay() {
     workshop: '#FFFFCC',
   };
   for (const cell of decisionCells) {
-    if (cell.textContent.indexOf('Oral') !== -1) {
+    if (cell.textContent.indexOf('Oral') !== -1 || cell.textContent.indexOf('Spotlight') !== -1 || cell.textContent.indexOf('Talk') !== -1) {
       cell.style.background = decisionColors['oral'];
     } else if (cell.textContent.indexOf('Reject') !== -1) {
       cell.style.background = decisionColors['reject'];

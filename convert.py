@@ -3,7 +3,6 @@ from urllib.parse import quote, unquote
 
 data = json.load(open('data/iclr2020_new.json'))
 print(len(data))
-print(data[0])
 new_data = []
 def get_ratings(paper):
     ratings = []
@@ -13,7 +12,8 @@ def get_ratings(paper):
     variance = 0
     for i in ratings:
         variance += (i-mean)**2
-    variance /= len(ratings)
+    if len(ratings) > 0:
+        variance /= len(ratings)
     variance = str(round(variance, 2))
     rating = str(round(mean, 2))
     return ratings, rating, variance
@@ -29,6 +29,7 @@ for paper in data:
             'authors': [],
             'emails': [],
             'title': paper['name'],
+            'decision': paper['metadata']['decision'] if 'decision' in paper['metadata'] else None,
             'rating': rating,
             'variance': variance,
             'confidences': [],
